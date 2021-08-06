@@ -1,6 +1,6 @@
 # stickysnippets
 <h3>
-I made Sticky Snippets because i opened up the windows sticky note application and realized you couldn't save your notes to a file.<br>
+I made Sticky Snippets because when I opened the Windows Sticky Note application I realized you couldn't save your notes to a file.<br>
 </h3>
 <h3>
 Also you could write a little script in your language of choice, save with the extension of your choosing and run later.<br>
