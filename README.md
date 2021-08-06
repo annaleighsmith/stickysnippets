@@ -18,8 +18,8 @@ With this application, you can save to a file with whatever extension you'd like
 <h4> demo images: </h4>
 
 <img src='https://github.com/anna-smith97/stickysnippets/blob/main/images/stickiesdemo3.PNG?raw=true'></img>
-<img src='https://github.com/anna-smith97/stickysnippets/blob/main/images/stickiesdemo.PNG?raw=true'</img>
-<img src='https://github.com/anna-smith97/stickysnippets/blob/main/images/stickiesdemo2.PNG?raw=true'</img>
+<img src='https://github.com/anna-smith97/stickysnippets/blob/main/images/stickiesdemo.PNG?raw=true'></img>
+<img src='https://github.com/anna-smith97/stickysnippets/blob/main/images/stickiesdemo2.PNG?raw=true'></img>
 
 
 
