@@ -1,6 +1,8 @@
 # stickysnippets
-<h4>
+<h3>
 I made Sticky Snippets because i opened up the windows sticky note application and realized you couldn't save your notes to a file.<br>
+</h3>
+<h4>
 Also you could write a little script in your language of choice, save with the extension of your choosing and run later.<br>
 This also works well with code snippets.<br>
 With this application, you can save to a file with whatever extension you'd like and everyone could use it (Linux, Mac & Windows).<br>
