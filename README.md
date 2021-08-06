@@ -16,9 +16,10 @@ With this application, you can save to a file with whatever extension you'd like
 <a href="https://github.com/anna-smith97/stickysnippets/blob/main/pythonfiles/Version1C.py">The latest version as an .py file is located here</a>
 </h3>
 <h4> demo images: </h4>
-![demo](https://github.com/anna-smith97/stickysnippets/blob/main/images/stickiesdemo3.PNG?raw=true)
-![demo](https://github.com/anna-smith97/stickysnippets/blob/main/images/stickiesdemo.PNG?raw=true)
-![demo](https://github.com/anna-smith97/stickysnippets/blob/main/images/stickiesdemo2.PNG?raw=true)
+
+<img src='https://github.com/anna-smith97/stickysnippets/blob/main/images/stickiesdemo3.PNG?raw=true'></img>
+<img src='https://github.com/anna-smith97/stickysnippets/blob/main/images/stickiesdemo.PNG?raw=true'</img>
+<img src='https://github.com/anna-smith97/stickysnippets/blob/main/images/stickiesdemo2.PNG?raw=true''</img>
 
 <a href="https://github.com/anna-smith97/stickysnippets/blob/main/Stickies_latest-version.exe">The latest version as an .exe file is located here</a><br>
 <a href="https://github.com/anna-smith97/stickysnippets/blob/main/pythonfiles/Version1C.py">The latest version as an .py file is located here</a>
