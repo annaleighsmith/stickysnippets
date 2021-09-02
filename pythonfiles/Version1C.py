@@ -31,7 +31,6 @@ color4 = MyColors('green', '#d0f4de', 4)
 color5 = MyColors('orange', '#f7d9c4', 5)
 color6 = MyColors('purple', '#dbcdf0', 6)
 color7 = MyColors('white', '#ffffff', 7)
-
 font_tup1 = ('Arial', 12)
 font1 = MyFonts('Arial', font_tup1, 1)
 font_tup2 = ('Times New Roman', 12)
@@ -44,9 +43,10 @@ font_tup5 = ('Lucida Console', 12)
 font5 = MyFonts('Lucida Console', font_tup5, 5)
 font_tup6 = ('Helvetica', 12)
 font6 = MyFonts('Helvetica', font_tup6, 6)
-
+font_tup7 = ('Verdana 12 italic')
+font7 = MyFonts('Verdana', font_tup6, 7)
 ColorList = (color2, color7, color3, color4, color5, color6, color1)
-FontList = (font1, font2, font3, font4, font5, font6)
+FontList = (font1, font7, font3, font4, font5, font6, font2)
 
 
 class StickyWindow:
@@ -97,6 +97,8 @@ class StickyWindow:
             font = font5.font_style_full
         if font == '6':
             font = font6.font_style_full
+        if font == '7':
+            font = font7.font_style_full
         self.font = font
 
         self.sticky_window.config(bg=color)
