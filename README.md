@@ -12,8 +12,7 @@ This also works well with code snippets.<br>
 With this application, you can save to a file with whatever extension you'd like and everyone could use it (Linux, Mac & Windows).<br>
 </h4>
 <h3>
-<a href="https://github.com/anna-smith97/stickysnippets/blob/main/Stickies_latest-version.exe">The latest version as an .exe file is located here</a><br>
-<a href="https://github.com/anna-smith97/stickysnippets/blob/main/pythonfiles/Version1C.py">The latest version as an .py file is located here</a>
+<a href="https://github.com/anna-smith97/stickysnippets/blob/main/main.py">The latest version as an .py file is located here</a>
 </h3>
 <h4> demo images: </h4>
 
