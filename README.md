@@ -10,9 +10,9 @@
 
 ### version 2 demo images:
 <img src='https://github.com/anna-smith97/stickysnippets/blob/main/images/stickies-v2.PNG?raw=true' style="width: 70%"></img>
-<img src='https://github.com/anna-smith97/stickysnippets/blob/main/images/stickies-v2-1.PNG?raw=true' style="width: 70%"></img>
 <img src='https://github.com/anna-smith97/stickysnippets/blob/main/images/stickies-v2-2.PNG?raw=true' style="width: 70%"></img>
 <img src='https://github.com/anna-smith97/stickysnippets/blob/main/images/stickies-v2-3.PNG?raw=true' style="width: 70%"></img>
+<img src='https://github.com/anna-smith97/stickysnippets/blob/main/images/stickies-v2-4.PNG?raw=true' style="width: 70%"></img>
 
 #### version 1 demo images:
 
