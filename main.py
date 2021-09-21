@@ -263,6 +263,7 @@ class App(Frame):
 
         # --  sticky note frame  ------------------------------------------->
         def sticky_note():
+
             sticky_frame = Toplevel(master=main)
             # -- title of note window
             sticky_frame.wm_title(name_entry.get())
@@ -288,7 +289,8 @@ class App(Frame):
 
             textbox = tk_Text(sticky_frame, wrap=WORD, bg=color_display, font=font_display)
             textbox.pack()
-
+            clear_rbs(rb_list_1)
+            clear_rbs(rb_list_2)
             # --  sticky note methods  ----------------------------------------->
             def delete_note() -> None:
                 sticky_frame.destroy()
@@ -312,11 +314,12 @@ class App(Frame):
         def settings_window():
             settings_frame = Toplevel(master=main)
             settings_frame.wm_title(application_title + 'Settings')
+            settings_frame.geometry('+300+100')
 
             main_settings_frame = LabelFrame(settings_frame, bg='#ffffff')
             main_settings_frame.pack()
 
-            color_picker_label = Label(main_settings_frame, text='Default Color:')
+            color_picker_label = Label(main_settings_frame, text='Default Color:', bg='#ffffff')
             color_picker_label.pack()
             # --  color settings radio buttons  -------------------------------->
             # --  these are the same as the buttons on the main page except with new variable names ->
@@ -378,7 +381,7 @@ class App(Frame):
             rb_list_3 = [r1s, r2s, r3s, r4s, r5s, r6s]
             clear_rbs(rb_list_3)
 
-            font_picker_label = Label(main_settings_frame, text='Default Font:')
+            font_picker_label = Label(main_settings_frame, text='Default Font:', bg='#ffffff')
             font_picker_label.pack()
             # --  font settings radio buttons  --------------------------------->
             rf1s = Radiobutton(main_settings_frame,
