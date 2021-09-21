@@ -1,9 +1,12 @@
-import tkinter as tk
-from tkinter import BOTH, BOTTOM, TRUE, TOP, X, LEFT, RIGHT
+from tkinter import (BOTH, BOTTOM, TRUE, TOP, X,
+                     LEFT, RIGHT, WORD, Label, LabelFrame,
+                     IntVar, Frame, StringVar, Entry,
+                     Radiobutton, Button, Toplevel, TclError)
+from tkinter import Text as tk_Text
 from tkinter.filedialog import asksaveasfile
 
 
-# main classes
+# --  classes to define font and color formatting  ----------------->
 
 
 class MyColors:
@@ -20,19 +23,23 @@ class MyFonts:
         self.value = value
 
 
-# constant variables
+# --  constant variables  ------------------------------------------>
+
 application_title = 'Stickies!'
-TINY_FONT = ('Lucida Console', 8)
-SMALL_FONT = ('CalibriLight', 10)
-MEDIUM_FONT = ('Lucida Bright', 12)
-LARGE_FONT = ('Lucida Bright', 20)
-RADIO_FONT = ('Lucida Console', 12)
+application_font = 'Lucida Bright'
+xs_font = (application_font, 8)
+small_font = (application_font, 10)
+medium_font = (application_font, 12)
+large_font = (application_font, 20)
+color0 = MyColors('white', '#ffffff', 0)
 color1 = MyColors('pink', '#f2c6de', 1)
 color2 = MyColors('blue', '#c6def1', 2)
 color3 = MyColors('yellow', '#fcf6bd', 3)
 color4 = MyColors('green', '#d0f4de', 4)
 color5 = MyColors('orange', '#f7d9c4', 5)
 color6 = MyColors('purple', '#dbcdf0', 6)
+font_tup0 = ('Calibri', 12)
+font0 = MyFonts('Calibri', font_tup0, 0)
 font_tup1 = ('Arial', 12)
 font1 = MyFonts('Arial', font_tup1, 1)
 font_tup2 = ('Times New Roman', 12)
@@ -45,11 +52,23 @@ font_tup5 = ('Verdana', 12)
 font5 = MyFonts('Verdana', font_tup5, 5)
 font_tup6 = ('Helvetica', 12)
 font6 = MyFonts('Helvetica', font_tup6, 6)
-ColorList = (color1, color2, color3, color4, color5, color6)
-FontList = (font1, font3, font4, font5, font6, font2)
+
+ColorList = (color0, color1, color2, color3, color4, color5, color6)
+FontList = (font0, font1, font3, font4, font5, font6, font2)
 
 
-class App(tk.Frame):
+# -- methods ------------------------------------------------------>
+
+
+def clear_rbs(array):
+    for val in array:
+        val.deselect()
+
+
+# --  create main window  ------------------------------------------>
+
+
+class App(Frame):
     def __init__(self,
                  master=None,
                  ):
@@ -57,187 +76,227 @@ class App(tk.Frame):
 
         self.pack()
         self.color_setting = None
-        self.name_entry = tk.StringVar()
-        self.color_choice = tk.StringVar()
-        self.font_choice = tk.StringVar()
-        self.default_type = tk.StringVar()
+        self.name_entry = StringVar()
+        self.color_choice = StringVar()
+        self.font_choice = StringVar()
+        self.default_type = StringVar()
         self.configure(bg='#ffffff')
 
-        mainframe = tk.LabelFrame(self, text='Stickies', bg='#ffffff', font=LARGE_FONT, )
-        mainframe.pack(padx=5, pady=5)
-        # ----------> NAME LABEL INSTRUCTIONS
-        label_name = tk.Label(mainframe, text='Name your note', font=MEDIUM_FONT, bg='#ffffff', )
+        # --  application title  ------------------------------------------->
+        main = LabelFrame(self, text=application_title, bg='#ffffff', font=large_font, )
+        main.pack(padx=5, pady=5)
+
+        # --  name label and entry box  ------------------------------------>
+
+        label_name = Label(main, text='Name your note', font=medium_font, bg='#ffffff', )
         label_name.pack(expand=TRUE, side=TOP, padx=5, pady=5, )
-        # ----------> NAME ENTRY ELEMENT
-        name_entry = tk.Entry(mainframe, textvariable=self.name_entry, font=MEDIUM_FONT, bg='#f1f1f1', )
+        name_entry = Entry(main, textvariable=self.name_entry, font=medium_font, bg='#f1f1f1', )
         name_entry.pack(expand=TRUE, side=TOP, padx=5, pady=5, )
-        # ----------> COLOR SELECTION BELOW NOTE NAMING ELEMENTS 1 & 2
-        frame_colors = tk.Frame(mainframe, bg='#ffffff')
+
+        # --  section for color choice  ------------------------------------>
+        frame_colors = Frame(main, bg='#ffffff')
         frame_colors.pack()
 
-        # ----------->
+        # --  function for returning integer variables from input  ---------->
+        color_int_var = IntVar()
 
-        def sel():
-            selection = str(color_int_var.get())
-            return selection
-
-        def selected():
-            selection_f = str(int_var_font.get())
-            return selection_f
-
-        frame_colors = tk.Frame(mainframe, bg='#ffffff')
-        frame_colors.pack()
-        color_label = tk.Label(frame_colors, text='Choose a color for your sticky:', bg='#FFFFFF', font=MEDIUM_FONT)
-        color_int_var = tk.IntVar()
+        # --  frame for color buttons  ------------------------------------->
+        frame_colors = Frame(main, bg='#ffffff')
+        frame_colors.pack(padx=10, pady=10)
+        color_label = Label(frame_colors, text='Choose a color for your sticky:', bg='#FFFFFF', font=medium_font)
         color_label.pack(expand=TRUE, fill=BOTH, side=TOP, )
-        # color radio buttons ---------------------->
-        r1 = tk.Radiobutton(frame_colors,
-                            text=ColorList[0].color_name,
-                            variable=color_int_var,
-                            value=1,
-                            bg=ColorList[0].hex_code,
-                            selectcolor=ColorList[0].hex_code,
-                            indicator=0,
-                            command=sel)
+
+        # --  radio buttons to select color  ------------------------------->
+        r1 = Radiobutton(frame_colors,
+                         text=ColorList[1].color_name,
+                         variable=color_int_var,
+                         value=1,
+                         bg=ColorList[1].hex_code,
+                         selectcolor=ColorList[1].hex_code,
+                         indicator=0,
+                         font=small_font, )
         r1.pack(expand=TRUE, fill=BOTH, side=TOP)
-        r2 = tk.Radiobutton(frame_colors,
-                            text=ColorList[1].color_name,
-                            variable=color_int_var,
-                            value=2,
-                            bg=ColorList[1].hex_code,
-                            selectcolor=ColorList[1].hex_code,
-                            indicator=0,
-                            command=sel)
+        r2 = Radiobutton(frame_colors,
+                         text=ColorList[2].color_name,
+                         variable=color_int_var,
+                         value=2,
+                         bg=ColorList[2].hex_code,
+                         selectcolor=ColorList[2].hex_code,
+                         indicator=0,
+                         font=small_font, )
         r2.pack(expand=TRUE, fill=BOTH, side=TOP)
-        r3 = tk.Radiobutton(frame_colors,
-                            text=ColorList[2].color_name,
-                            variable=color_int_var,
-                            value=3,
-                            bg=ColorList[2].hex_code,
-                            selectcolor=ColorList[2].hex_code,
-                            indicator=0,
-                            command=sel)
+        r3 = Radiobutton(frame_colors,
+                         text=ColorList[3].color_name,
+                         variable=color_int_var,
+                         value=3,
+                         bg=ColorList[3].hex_code,
+                         selectcolor=ColorList[3].hex_code,
+                         indicator=0,
+                         font=small_font, )
         r3.pack(expand=TRUE, fill=BOTH, side=TOP)
-        r4 = tk.Radiobutton(frame_colors,
-                            text=ColorList[3].color_name,
-                            variable=color_int_var,
-                            value=4,
-                            bg=ColorList[3].hex_code,
-                            selectcolor=ColorList[3].hex_code,
-                            indicator=0,
-                            command=sel)
+        r4 = Radiobutton(frame_colors,
+                         text=ColorList[4].color_name,
+                         variable=color_int_var,
+                         value=4,
+                         bg=ColorList[4].hex_code,
+                         selectcolor=ColorList[4].hex_code,
+                         indicator=0,
+                         font=small_font, )
         r4.pack(expand=TRUE, fill=BOTH, side=TOP)
-        r5 = tk.Radiobutton(frame_colors,
-                            text=ColorList[4].color_name,
-                            variable=color_int_var,
-                            value=5,
-                            bg=ColorList[4].hex_code,
-                            selectcolor=ColorList[4].hex_code,
-                            indicator=0,
-                            command=sel)
+        r5 = Radiobutton(frame_colors,
+                         text=ColorList[5].color_name,
+                         variable=color_int_var,
+                         value=5,
+                         bg=ColorList[5].hex_code,
+                         selectcolor=ColorList[5].hex_code,
+                         indicator=0,
+                         font=small_font, )
         r5.pack(expand=TRUE, fill=BOTH, side=TOP)
-        r6 = tk.Radiobutton(frame_colors,
-                            text=ColorList[5].color_name,
-                            variable=color_int_var,
-                            value=6,
-                            bg=ColorList[5].hex_code,
-                            selectcolor=ColorList[5].hex_code,
-                            indicator=0,
-                            command=sel)
+        r6 = Radiobutton(frame_colors,
+                         text=ColorList[6].color_name,
+                         variable=color_int_var,
+                         value=6,
+                         bg=ColorList[6].hex_code,
+                         selectcolor=ColorList[6].hex_code,
+                         indicator=0,
+                         font=small_font, )
         r6.pack(expand=TRUE, fill=BOTH, side=TOP)
-        # --------------/ color radio buttons
-        int_var_font = tk.IntVar()
-        frame_font = tk.Frame(mainframe, bg='#ffffff')
-        frame_font.pack()
-        font_label = tk.Label(frame_font, text='Choose a font for your sticky:', bg='#FFFFFF', font=MEDIUM_FONT)
+        rb_list_1 = [r1, r2, r3, r4, r5, r6]
+        clear_rbs(rb_list_1)
+
+        font_int_var = IntVar()
+        # --  frame for font buttons  -------------------------------------->
+        frame_font = Frame(main, bg='#ffffff')
+        frame_font.pack(padx=10, pady=10)
+        font_label = Label(frame_font, text='Choose a font for your sticky:', bg='#FFFFFF', font=medium_font)
         font_label.pack(expand=TRUE, fill=BOTH, side=TOP)
-        # ---------> font radio buttons
-        rf1 = tk.Radiobutton(frame_font,
-                             text=FontList[0].font_style,
-                             variable=int_var_font,
-                             value=1,
-                             font=FontList[0].font_style_full,
-                             indicator=0,
-                             command=selected)
+
+        # --  radio buttons to select font  -------------------------------->
+        rf1 = Radiobutton(frame_font,
+                          text=FontList[1].font_style,
+                          variable=font_int_var,
+                          value=1,
+                          font=FontList[1].font_style_full,
+                          indicator=0,
+                          )
         rf1.pack(expand=TRUE, fill=BOTH, side=TOP)
-        rf2 = tk.Radiobutton(frame_font,
-                             text=FontList[1].font_style,
-                             variable=int_var_font,
-                             value=2,
-                             font=FontList[1].font_style_full,
-                             indicator=0,
-                             command=selected)
+        rf2 = Radiobutton(frame_font,
+                          text=FontList[2].font_style,
+                          variable=font_int_var,
+                          value=2,
+                          font=FontList[2].font_style_full,
+                          indicator=0,
+                          )
         rf2.pack(expand=TRUE, fill=BOTH, side=TOP)
-        rf3 = tk.Radiobutton(frame_font,
-                             text=FontList[2].font_style,
-                             variable=int_var_font,
-                             value=3,
-                             font=FontList[2].font_style_full,
-                             indicator=0,
-                             command=selected)
+        rf3 = Radiobutton(frame_font,
+                          text=FontList[3].font_style,
+                          variable=font_int_var,
+                          value=3,
+                          font=FontList[3].font_style_full,
+                          indicator=0,
+                          )
         rf3.pack(expand=TRUE, fill=BOTH, side=TOP)
-        rf4 = tk.Radiobutton(frame_font,
-                             text=FontList[3].font_style,
-                             variable=int_var_font,
-                             value=4,
-                             font=FontList[3].font_style_full,
-                             indicator=0,
-                             command=selected)
+        rf4 = Radiobutton(frame_font,
+                          text=FontList[4].font_style,
+                          variable=font_int_var,
+                          value=4,
+                          font=FontList[4].font_style_full,
+                          indicator=0,
+                          )
         rf4.pack(expand=TRUE, fill=BOTH, side=TOP)
-        rf5 = tk.Radiobutton(frame_font,
-                             text=FontList[4].font_style,
-                             variable=int_var_font,
-                             value=5,
-                             font=FontList[4].font_style_full,
-                             indicator=0,
-                             command=selected)
+        rf5 = Radiobutton(frame_font,
+                          text=FontList[5].font_style,
+                          variable=font_int_var,
+                          value=5,
+                          font=FontList[5].font_style_full,
+                          indicator=0, )
         rf5.pack(expand=TRUE, fill=BOTH, side=TOP)
-        rf6 = tk.Radiobutton(frame_font,
-                             text=FontList[5].font_style,
-                             variable=int_var_font,
-                             value=6,
-                             font=FontList[5].font_style_full,
-                             indicator=0,
-                             command=selected)
+        rf6 = Radiobutton(frame_font,
+                          text=FontList[6].font_style,
+                          variable=font_int_var,
+                          value=6,
+                          font=FontList[6].font_style_full,
+                          indicator=0, )
         rf6.pack(expand=TRUE, fill=BOTH, side=TOP)
-        # --------------/ font radio buttons
 
-        my_create_button = tk.Button(mainframe, text='Create', command=lambda: sticky_note(), font=MEDIUM_FONT,
-                                     bg='white')
-        my_create_button.pack(expand=TRUE, fill=BOTH, padx=10, pady=20, side=TOP, )
-        my_settings_button = tk.Button(
-            mainframe, text='Settings', command=lambda: settings_window(), font=MEDIUM_FONT, bg='white')
-        my_settings_button.pack(expand=TRUE, fill=BOTH, side=BOTTOM, padx=10, pady=5, )
-        color_label.pack(expand=TRUE, fill=BOTH, side=TOP, )
+        rb_list_2 = [rf1, rf2, rf3, rf4, rf5, rf6]
+        clear_rbs(rb_list_2)
 
+        # --  frame for main page buttons  --------------------------------->
+        main_button_frame = Frame(main, bg='#FFFFFF')
+        main_button_frame.pack(side=BOTTOM, padx=10, pady=10)
+
+        # --  button to create a new note  --------------------------------->
+        my_create_button = Button(
+            main_button_frame,
+            text='Create',
+            command=lambda: sticky_note(),
+            font=medium_font,
+            bg='#FFFFFF')
+        my_create_button.pack(expand=TRUE, fill=BOTH, side=LEFT)
+
+        # --  button to open settings  ------------------------------------->
+        my_settings_button = Button(
+            main_button_frame,
+            text='Settings',
+            command=lambda: settings_window(),
+            font=medium_font,
+            bg='#FFFFFF')
+
+        my_settings_button.pack(expand=TRUE, fill=BOTH, side=LEFT)
+
+        def clear_selections():
+            rb_list_all = [rf1, rf2, rf3, rf4, rf5, rf6, r1, r2, r3, r4, r5, r6]
+            clear_rbs(rb_list_all)
+            name_entry.delete(0, 'end')
+
+        # --  button to clear all selections  ------------------------------------->
+
+        clear_button = Button(
+            main_button_frame,
+            text='Clear',
+            command=clear_selections,
+            font=medium_font,
+            bg='#FFFFFF')
+
+        clear_button.pack(expand=TRUE, fill=BOTH, side=LEFT)
+
+        # --  sticky note frame  ------------------------------------------->
         def sticky_note():
-            sticky_frame = tk.Toplevel(master=mainframe)
+            sticky_frame = Toplevel(master=main)
+            # -- title of note window
             sticky_frame.wm_title(name_entry.get())
-            name = name_entry.get()
-            sticky_frame.geometry('300x300')
-            color_value = int(sel()) - 1
-            new_color = ColorList[color_value].hex_code
-            sticky_frame.configure(bg=str(new_color))
-            font_value = int(selected()) - 1
-            new_font = FontList[font_value].font_style_full
-            button_frame = tk.Frame(sticky_frame)
-            save_button = tk.Button(button_frame, text='Save Sticky', command=lambda: save_file())
+            # -- note size
+            sticky_frame.geometry('300x300-10+10')
+            # -- buttons at the top of each note
+            button_frame = Frame(sticky_frame)
+            save_button = Button(button_frame, text='Save Sticky', command=lambda: save_file())
             save_button.pack(side=LEFT, padx=10, pady=5, fill=X, expand=TRUE)
-            delete_button = tk.Button(button_frame, text='Delete Sticky', command=lambda: delete_note())
+            delete_button = Button(button_frame, text='Delete Sticky', command=lambda: delete_note())
             delete_button.pack(side=RIGHT, padx=10, pady=5, expand=TRUE, fill=X)
+            # -- frame for text entry
             button_frame.pack(side=TOP, fill=X, expand=TRUE)
-            textbox = tk.Text(sticky_frame, font=new_font, bg=str(new_color))
-            textbox.pack()
-            textbox = tk.Text(sticky_frame, font=new_font, bg=str(new_color))
+            try:
+                color_display = ColorList[color_int_var.get()].hex_code
+            except TclError:
+                color_display = ColorList[0].hex_code
+
+            try:
+                font_display = FontList[font_int_var.get()].font_style_full
+            except TclError:
+                font_display = FontList[0].font_style_full
+
+            textbox = tk_Text(sticky_frame, wrap=WORD, bg=color_display, font=font_display)
             textbox.pack()
 
+            # --  sticky note methods  ----------------------------------------->
             def delete_note() -> None:
                 sticky_frame.destroy()
 
             def save_file() -> None:
                 txt_content = textbox.get('1.0', 'end-1c')
                 f = asksaveasfile(
-                    initialfile=name,  # replaced name with default type to test
+                    initialfile=name_entry.get(),
                     defaultextension='.txt',
                     filetypes=(
                         ('Text Documents', '*.txt'),
@@ -249,136 +308,132 @@ class App(tk.Frame):
                     f.write(txt_content)
                     sticky_frame.destroy()
 
+        # --  settings frame  ---------------------------------------------->
         def settings_window():
-            settings_frame = tk.Toplevel(master=mainframe)
-            settings_frame.wm_title('Stickies! Settings')
+            settings_frame = Toplevel(master=main)
+            settings_frame.wm_title(application_title + 'Settings')
 
-            main_settings_frame = tk.LabelFrame(settings_frame, bg='#ffffff')
+            main_settings_frame = LabelFrame(settings_frame, bg='#ffffff')
             main_settings_frame.pack()
 
-            color_picker_label = tk.Label(main_settings_frame, text='Default Color:')
+            color_picker_label = Label(main_settings_frame, text='Default Color:')
             color_picker_label.pack()
+            # --  color settings radio buttons  -------------------------------->
+            # --  these are the same as the buttons on the main page except with new variable names ->
 
-            r1s = tk.Radiobutton(main_settings_frame,
-                                 text=ColorList[0].color_name,
-                                 variable=color_int_var,
-                                 value=1,
-                                 bg=ColorList[0].hex_code,
-                                 selectcolor=ColorList[0].hex_code,
-                                 indicator=0,
-                                 command=sel)
+            r1s = Radiobutton(main_settings_frame,
+                              text=ColorList[1].color_name,
+                              variable=color_int_var,
+                              value=1,
+                              bg=ColorList[1].hex_code,
+                              selectcolor=ColorList[1].hex_code,
+                              indicator=0,
+                              )
             r1s.pack(expand=TRUE, fill=BOTH, side=TOP)
-            r2s = tk.Radiobutton(main_settings_frame,
-                                 text=ColorList[1].color_name,
-                                 variable=color_int_var,
-                                 value=2,
-                                 bg=ColorList[1].hex_code,
-                                 selectcolor=ColorList[1].hex_code,
-                                 indicator=0,
-                                 command=sel)
+            r2s = Radiobutton(main_settings_frame,
+                              text=ColorList[2].color_name,
+                              variable=color_int_var,
+                              value=2,
+                              bg=ColorList[2].hex_code,
+                              selectcolor=ColorList[2].hex_code,
+                              indicator=0,
+                              )
             r2s.pack(expand=TRUE, fill=BOTH, side=TOP)
-            r3s = tk.Radiobutton(main_settings_frame,
-                                 text=ColorList[2].color_name,
-                                 variable=color_int_var,
-                                 value=3,
-                                 bg=ColorList[2].hex_code,
-                                 selectcolor=ColorList[2].hex_code,
-                                 indicator=0,
-                                 command=sel)
+            r3s = Radiobutton(main_settings_frame,
+                              text=ColorList[3].color_name,
+                              variable=color_int_var,
+                              value=3,
+                              bg=ColorList[3].hex_code,
+                              selectcolor=ColorList[3].hex_code,
+                              indicator=0,
+                              )
             r3s.pack(expand=TRUE, fill=BOTH, side=TOP)
-            r4s = tk.Radiobutton(main_settings_frame,
-                                 text=ColorList[3].color_name,
-                                 variable=color_int_var,
-                                 value=4,
-                                 bg=ColorList[3].hex_code,
-                                 selectcolor=ColorList[3].hex_code,
-                                 indicator=0,
-                                 command=sel)
+            r4s = Radiobutton(main_settings_frame,
+                              text=ColorList[4].color_name,
+                              variable=color_int_var,
+                              value=4,
+                              bg=ColorList[4].hex_code,
+                              selectcolor=ColorList[4].hex_code,
+                              indicator=0,
+                              )
             r4s.pack(expand=TRUE, fill=BOTH, side=TOP)
-            r5s = tk.Radiobutton(main_settings_frame,
-                                 text=ColorList[4].color_name,
-                                 variable=color_int_var,
-                                 value=5,
-                                 bg=ColorList[4].hex_code,
-                                 selectcolor=ColorList[4].hex_code,
-                                 indicator=0,
-                                 command=sel)
+            r5s = Radiobutton(main_settings_frame,
+                              text=ColorList[5].color_name,
+                              variable=color_int_var,
+                              value=5,
+                              bg=ColorList[5].hex_code,
+                              selectcolor=ColorList[5].hex_code,
+                              indicator=0,
+                              )
             r5s.pack(expand=TRUE, fill=BOTH, side=TOP)
-            r6s = tk.Radiobutton(main_settings_frame,
-                                 text=ColorList[5].color_name,
-                                 variable=color_int_var,
-                                 value=6,
-                                 bg=ColorList[5].hex_code,
-                                 selectcolor=ColorList[5].hex_code,
-                                 indicator=0,
-                                 command=sel)
+            r6s = Radiobutton(main_settings_frame,
+                              text=ColorList[6].color_name,
+                              variable=color_int_var,
+                              value=6,
+                              bg=ColorList[6].hex_code,
+                              selectcolor=ColorList[6].hex_code,
+                              indicator=0,
+                              )
             r6s.pack(expand=TRUE, fill=BOTH, side=TOP)
-            # deselect all after opening settings
-            radiobutton_list = [r1s, r2s, r3s, r4s, r5s, r6s]
+            rb_list_3 = [r1s, r2s, r3s, r4s, r5s, r6s]
+            clear_rbs(rb_list_3)
 
-            for radiobutton in radiobutton_list:
-                radiobutton.deselect()
-
-            font_picker_label = tk.Label(main_settings_frame, text='Default Font:')
+            font_picker_label = Label(main_settings_frame, text='Default Font:')
             font_picker_label.pack()
-
-            rf1s = tk.Radiobutton(main_settings_frame,
-                                  text=FontList[0].font_style,
-                                  variable=int_var_font,
-                                  value=1,
-                                  font=FontList[0].font_style_full,
-                                  indicator=0,
-                                  command=selected)
+            # --  font settings radio buttons  --------------------------------->
+            rf1s = Radiobutton(main_settings_frame,
+                               text=FontList[1].font_style,
+                               variable=font_int_var,
+                               value=1,
+                               font=FontList[1].font_style_full,
+                               indicator=0,
+                               )
             rf1s.pack(expand=TRUE, fill=BOTH, side=TOP)
-            rf2s = tk.Radiobutton(main_settings_frame,
-                                  text=FontList[1].font_style,
-                                  variable=int_var_font,
-                                  value=2,
-                                  font=FontList[1].font_style_full,
-                                  indicator=0,
-                                  command=selected)
+            rf2s = Radiobutton(main_settings_frame,
+                               text=FontList[2].font_style,
+                               variable=font_int_var,
+                               value=2,
+                               font=FontList[2].font_style_full,
+                               indicator=0,
+                               )
             rf2s.pack(expand=TRUE, fill=BOTH, side=TOP)
-            rf3s = tk.Radiobutton(main_settings_frame,
-                                  text=FontList[2].font_style,
-                                  variable=int_var_font,
-                                  value=3,
-                                  font=FontList[2].font_style_full,
-                                  indicator=0,
-                                  command=selected)
+            rf3s = Radiobutton(main_settings_frame,
+                               text=FontList[3].font_style,
+                               variable=font_int_var,
+                               value=3,
+                               font=FontList[3].font_style_full,
+                               indicator=0,
+                               )
             rf3s.pack(expand=TRUE, fill=BOTH, side=TOP)
-            rf4s = tk.Radiobutton(main_settings_frame,
-                                  text=FontList[3].font_style,
-                                  variable=int_var_font,
-                                  value=4,
-                                  font=FontList[3].font_style_full,
-                                  indicator=0,
-                                  command=selected)
+            rf4s = Radiobutton(main_settings_frame,
+                               text=FontList[4].font_style,
+                               variable=font_int_var,
+                               value=4,
+                               font=FontList[4].font_style_full,
+                               indicator=0,
+                               )
             rf4s.pack(expand=TRUE, fill=BOTH, side=TOP)
-            rf5s = tk.Radiobutton(main_settings_frame,
-                                  text=FontList[4].font_style,
-                                  variable=int_var_font,
-                                  value=5,
-                                  font=FontList[4].font_style_full,
-                                  indicator=0,
-                                  command=selected)
+            rf5s = Radiobutton(main_settings_frame,
+                               text=FontList[5].font_style,
+                               variable=font_int_var,
+                               value=5,
+                               font=FontList[5].font_style_full,
+                               indicator=0,
+                               )
             rf5s.pack(expand=TRUE, fill=BOTH, side=TOP)
-            rf6s = tk.Radiobutton(main_settings_frame,
-                                  text=FontList[5].font_style,
-                                  variable=int_var_font,
-                                  value=6,
-                                  font=FontList[5].font_style_full,
-                                  indicator=0,
-                                  command=selected)
+            rf6s = Radiobutton(main_settings_frame,
+                               text=FontList[6].font_style,
+                               variable=font_int_var,
+                               value=6,
+                               font=FontList[6].font_style_full,
+                               indicator=0,
+                               )
             rf6s.pack(expand=TRUE, fill=BOTH, side=TOP)
-            radiobutton_list_f = [rf1s, rf2s, rf3s, rf4s, rf5s, rf6s]
+            rb_list_4 = [rf1s, rf2s, rf3s, rf4s, rf5s, rf6s]
+            clear_rbs(rb_list_4)
 
-            for radiobutton in radiobutton_list_f:
-                radiobutton.deselect()
-
-            # button calls the save_settings function which adds preferences to an array
-            # closes the settings window
-            close_settings = tk.Button(main_settings_frame, text='Done',
-                                       command=lambda: close_settings_window())
+            close_settings = Button(main_settings_frame, text='Done',
+                                    command=lambda: close_settings_window())
             close_settings.pack(side=LEFT, padx=10, pady=5, fill=X, expand=TRUE)
 
             def close_settings_window():
@@ -387,10 +442,10 @@ class App(tk.Frame):
 
 myapp = App()
 
-# method calls to windows manager class ---> title, size and opacity
+# -- method calls to windows manager class --- title, size and opacity --
 myapp.master.title(application_title)
-myapp.master.geometry('300x700')
-myapp.master.wm_attributes('-alpha', 0.85)
+myapp.master.geometry('+10+10')
+myapp.master.wm_attributes('-alpha', 0.95)
 
 if __name__ == '__main__':
     myapp.mainloop()
