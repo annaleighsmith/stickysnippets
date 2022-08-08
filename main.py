@@ -5,9 +5,12 @@ from tkinter import (BOTH, BOTTOM, TRUE, TOP, X,
 from tkinter import Text as tk_Text
 from tkinter.filedialog import asksaveasfile
 
+# SETTINGS_FILE = "settings.json"
+# contents = open(SETTINGS_FILE).read()
+# config = eval(contents)
+bg_frame = "#ffffff"
 
 # --  classes to define font and color formatting  ----------------->
-
 
 class MyColors:
     def __init__(self, color_name, hex_code, value):
@@ -31,7 +34,7 @@ xs_font = (application_font, 8)
 small_font = (application_font, 10)
 medium_font = (application_font, 12)
 large_font = (application_font, 20)
-color0 = MyColors('white', '#ffffff', 0)
+color0 = MyColors('white', bg_frame, 0)
 color1 = MyColors('pink', '#f2c6de', 1)
 color2 = MyColors('blue', '#c6def1', 2)
 color3 = MyColors('yellow', '#fcf6bd', 3)
@@ -80,30 +83,30 @@ class App(Frame):
         self.color_choice = StringVar()
         self.font_choice = StringVar()
         self.default_type = StringVar()
-        self.configure(bg='#ffffff')
-
+        self.untitled_count = 1
+        self.configure(bg=bg_frame)
+        
         # --  application title  ------------------------------------------->
-        main = LabelFrame(self, text=application_title, bg='#ffffff', font=large_font, )
+        main = LabelFrame(self, text=application_title, bg=bg_frame, font=large_font, )
         main.pack(padx=5, pady=5)
 
         # --  name label and entry box  ------------------------------------>
-
-        label_name = Label(main, text='Name your note', font=medium_font, bg='#ffffff', )
+        label_name = Label(main, text='Name your note', font=medium_font, bg=bg_frame, )
         label_name.pack(expand=TRUE, side=TOP, padx=5, pady=5, )
         name_entry = Entry(main, textvariable=self.name_entry, font=medium_font, bg='#f1f1f1', )
         name_entry.pack(expand=TRUE, side=TOP, padx=5, pady=5, )
 
         # --  section for color choice  ------------------------------------>
-        frame_colors = Frame(main, bg='#ffffff')
+        frame_colors = Frame(main, bg=bg_frame)
         frame_colors.pack()
 
         # --  function for returning integer variables from input  ---------->
         color_int_var = IntVar()
 
         # --  frame for color buttons  ------------------------------------->
-        frame_colors = Frame(main, bg='#ffffff')
+        frame_colors = Frame(main, bg=bg_frame)
         frame_colors.pack(padx=10, pady=10)
-        color_label = Label(frame_colors, text='Choose a color for your sticky:', bg='#FFFFFF', font=medium_font)
+        color_label = Label(frame_colors, text='Choose a color for your sticky:', bg=bg_frame, font=medium_font)
         color_label.pack(expand=TRUE, fill=BOTH, side=TOP, )
 
         # --  radio buttons to select color  ------------------------------->
@@ -162,13 +165,13 @@ class App(Frame):
                          font=small_font, )
         r6.pack(expand=TRUE, fill=BOTH, side=TOP)
         rb_list_1 = [r1, r2, r3, r4, r5, r6]
-        clear_rbs(rb_list_1)
+        # clear_rbs(rb_list_1)
 
         font_int_var = IntVar()
         # --  frame for font buttons  -------------------------------------->
-        frame_font = Frame(main, bg='#ffffff')
+        frame_font = Frame(main, bg=bg_frame)
         frame_font.pack(padx=10, pady=10)
-        font_label = Label(frame_font, text='Choose a font for your sticky:', bg='#FFFFFF', font=medium_font)
+        font_label = Label(frame_font, text='Choose a font for your sticky:', bg=bg_frame, font=medium_font)
         font_label.pack(expand=TRUE, fill=BOTH, side=TOP)
 
         # --  radio buttons to select font  -------------------------------->
@@ -220,10 +223,10 @@ class App(Frame):
         rf6.pack(expand=TRUE, fill=BOTH, side=TOP)
 
         rb_list_2 = [rf1, rf2, rf3, rf4, rf5, rf6]
-        clear_rbs(rb_list_2)
+        # clear_rbs(rb_list_2)
 
         # --  frame for main page buttons  --------------------------------->
-        main_button_frame = Frame(main, bg='#FFFFFF')
+        main_button_frame = Frame(main, bg=bg_frame)
         main_button_frame.pack(side=BOTTOM, padx=10, pady=10)
 
         # --  button to create a new note  --------------------------------->
@@ -232,7 +235,7 @@ class App(Frame):
             text='Create',
             command=lambda: sticky_note(),
             font=medium_font,
-            bg='#FFFFFF')
+            bg=bg_frame)
         my_create_button.pack(expand=TRUE, fill=BOTH, side=LEFT)
 
         # --  button to open settings  ------------------------------------->
@@ -241,7 +244,7 @@ class App(Frame):
             text='Settings',
             command=lambda: settings_window(),
             font=medium_font,
-            bg='#FFFFFF')
+            bg=bg_frame)
 
         my_settings_button.pack(expand=TRUE, fill=BOTH, side=LEFT)
 
@@ -257,7 +260,7 @@ class App(Frame):
             text='Clear',
             command=clear_selections,
             font=medium_font,
-            bg='#FFFFFF')
+            bg=bg_frame)
 
         clear_button.pack(expand=TRUE, fill=BOTH, side=LEFT)
 
@@ -266,7 +269,17 @@ class App(Frame):
 
             sticky_frame = Toplevel(master=main)
             # -- title of note window
-            sticky_frame.wm_title(name_entry.get())
+            
+            if name_entry.get() == "":
+                sticky_name = f"Untitled_{self.untitled_count}"
+                
+                self.untitled_count +=1
+                
+            else:
+                sticky_name = name_entry.get()
+            
+   
+            sticky_frame.wm_title(sticky_name)
             # -- note size
             sticky_frame.geometry('300x300-10+10')
             # -- buttons at the top of each note
@@ -289,14 +302,15 @@ class App(Frame):
 
             textbox = tk_Text(sticky_frame, wrap=WORD, bg=color_display, font=font_display)
             textbox.pack()
-            clear_rbs(rb_list_1)
-            clear_rbs(rb_list_2)
+            # clear_rbs(rb_list_1)
+            # clear_rbs(rb_list_2)
             # --  sticky note methods  ----------------------------------------->
             def delete_note() -> None:
                 sticky_frame.destroy()
 
             def save_file() -> None:
                 txt_content = textbox.get('1.0', 'end-1c')
+                print(txt_content)
                 f = asksaveasfile(
                     initialfile=name_entry.get(),
                     defaultextension='.txt',
@@ -316,10 +330,10 @@ class App(Frame):
             settings_frame.wm_title(application_title + 'Settings')
             settings_frame.geometry('+300+100')
 
-            main_settings_frame = LabelFrame(settings_frame, bg='#ffffff')
+            main_settings_frame = LabelFrame(settings_frame, bg=bg_frame)
             main_settings_frame.pack()
 
-            color_picker_label = Label(main_settings_frame, text='Default Color:', bg='#ffffff')
+            color_picker_label = Label(main_settings_frame, text='Default Color:', bg=bg_frame)
             color_picker_label.pack()
             # --  color settings radio buttons  -------------------------------->
             # --  these are the same as the buttons on the main page except with new variable names ->
@@ -379,9 +393,9 @@ class App(Frame):
                               )
             r6s.pack(expand=TRUE, fill=BOTH, side=TOP)
             rb_list_3 = [r1s, r2s, r3s, r4s, r5s, r6s]
-            clear_rbs(rb_list_3)
 
-            font_picker_label = Label(main_settings_frame, text='Default Font:', bg='#ffffff')
+
+            font_picker_label = Label(main_settings_frame, text='Default Font:', bg=bg_frame)
             font_picker_label.pack()
             # --  font settings radio buttons  --------------------------------->
             rf1s = Radiobutton(main_settings_frame,
@@ -433,8 +447,7 @@ class App(Frame):
                                )
             rf6s.pack(expand=TRUE, fill=BOTH, side=TOP)
             rb_list_4 = [rf1s, rf2s, rf3s, rf4s, rf5s, rf6s]
-            clear_rbs(rb_list_4)
-
+         
             close_settings = Button(main_settings_frame, text='Done',
                                     command=lambda: close_settings_window())
             close_settings.pack(side=LEFT, padx=10, pady=5, fill=X, expand=TRUE)
