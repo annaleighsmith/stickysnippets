@@ -1,5 +1,7 @@
 # stickysnippets
 
+- 2022-08-08: This was one of my first full projects I ever wrote in Python; looking back there are many improvements I could make, needs a way to open files a new sticky notes, needs better settings config, etc.
+
 - I made Sticky Snippets because when I opened the Windows Sticky Note application I realized you couldn't save your notes to a file.
 
 
