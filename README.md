@@ -7,7 +7,7 @@
 
 - In this application you can write a simple to-do list or a write a little script in your language of choice, save with the extension of your choosing and run later.
 
-- This also works well with code snippets because you can save with your extensionof choice.
+- This also works well with code snippets because you can save with your extension of choice.
 
 - This should be compatiable with Linux, Mac & Windows since its based on Tkinter
 
