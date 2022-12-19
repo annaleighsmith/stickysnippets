@@ -10,8 +10,7 @@ from tkinter.filedialog import asksaveasfile
 # config = eval(contents)
 bg_frame = "#ffffff"
 
-# --  classes to define font and color formatting  ----------------->
-
+# define color and font formatting
 class MyColors:
     def __init__(self, color_name, hex_code, value):
         self.color_name = color_name
